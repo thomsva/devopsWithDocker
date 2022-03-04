@@ -53,7 +53,7 @@ The dockerfile can be found in the 1.11 folder.
 
 ## Exercise 1.12 - 1.14 Hello frontend, backend and environment
 
-The dockerfiles including environment variables are found in 1.12 and 1.13 folders. The command for running the backend and the frontedn were
+The dockerfiles including environment variables are found in [1.12](https://github.com/thomsva/devopsWithDocker/tree/main/part1/1.12) and [1.13](https://github.com/thomsva/devopsWithDocker/tree/main/part1/1.13) folders. The command for running the backend and the frontend were
 
 ```
 docker run -p 8080:8080 example-backend  
