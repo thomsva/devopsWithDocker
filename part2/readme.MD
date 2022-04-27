@@ -2,7 +2,7 @@
 
 Start the services with the command `docker-compose up --scale compute=3` to run 3 instances of compute.   
 
-## Excerise 2.10
+## Excerise 2.11
 
 For this excercise I configured a simple development environment for my React/NodeJs project.  
 
@@ -51,7 +51,7 @@ volumes:
 
 
 The Dockerfile for the frontend:
-```yml
+```dockerfile
 FROM node:16.14-alpine3.14
 COPY ./ /usr/src/web
 WORKDIR /usr/src/web
@@ -59,7 +59,7 @@ EXPOSE 3000
 CMD [ -d "node_modules" ] && npm start || npm ci && npm start
 ```
 The Dockerfile for the backend: 
-```yml
+```dockerfile
 FROM node:16.14-alpine3.14
 COPY ./ /usr/src/web
 WORKDIR /usr/src/web

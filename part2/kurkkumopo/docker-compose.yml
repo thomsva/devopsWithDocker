@@ -1,0 +1,37 @@
+version: "3.8"
+
+volumes: 
+  model:
+  data:
+
+services:
+  # Runs in port 3000 and connects to backend running at port 5000
+  frontend:
+    # Runs in port 3000 and connects to backend running at port 5000
+    build: ./ml-kurkkumopo-frontend
+    ports:
+      - 3000:3000
+    container_name: kurkkumopo-frontend
+
+  backend: 
+    # Flask backend running in port 5000. 
+    # Requires a model created by ml-kurkkumopo-training at ./model
+    build: ./ml-kurkkumopo-backend
+    ports:
+      - 5000:5000
+    container_name: kurkkumopo-backend
+    volumes: 
+     - model:/src/model
+    depends_on:
+     - training
+
+  training:
+    # Downloads images to ./imgs folder and creates CSVs to for generated 
+    # image URI:s to ./data folder. 
+    # Creates a model to ./model folder after which it will exit with code 0 (success).
+    build: ./ml-kurkkumopo-training
+    container_name: kurkkumopo-training
+    volumes: 
+      - model:/src/model
+      - data:/src/data
+
