@@ -2,7 +2,7 @@
 
 A deployment pipeline was made for [this simple React app](https://github.com/thomsva/Hello). 
 
-## Excercise 3.2-3.3 Building an image inside a containern and using non root user
+## Excercise 3.2-3.3 Building an image inside a container and using non root user
 
 The solutions can be found in the 3.2 and 3.3 folders. 
 ## Exercise 3.4-3.6: Optimize image sizes
@@ -71,7 +71,7 @@ USER appuser
 CMD ["serve", "-s", "-l", "5000", "build"]
 ```
 
-# Multi stage build
+### Multi stage build
 - frontend: 96.2MB (multistage build, FROM alpine)
 - frontend: 10.4MB (multistage build, FROM alpine, thttpd)
 - backend: 23.7MB (multistage build, FROM alpine)
