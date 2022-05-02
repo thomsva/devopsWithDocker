@@ -144,3 +144,48 @@ CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "5000", "-d", "build", "-u", "appuse
 
 > Summary: The backend image size was reduced to 18.1MB and the frontend to 10.4MB.
 
+## Excercise 3.7
+
+Optimizing the Docker configuration of the simple React app used in 3.1.
+
+The original Dockerfile looks like this: 
+```Dockerfile
+FROM node:16.14-alpine
+WORKDIR /app
+COPY package*.json /app/
+RUN npm ci
+COPY ./ /app
+RUN npm run build
+RUN npm install serve -g
+CMD ["sh", "-c", "serve -l tcp://0.0.0.0:${PORT} -s /app/build"]
+```
+
+The image size is 427MB. Without Alpine it would be much larger. 
+
+The Dockerfile can be optimized by 
+- combining RUN statements,
+- using a two-stage build,
+- using a lighter weight web server,
+- running the app with a non-root user.
+
+```Dockerfile
+FROM node:16.14-alpine as build
+WORKDIR /app
+COPY ./ /app
+RUN npm ci  && npm run build
+
+FROM alpine
+WORKDIR /app
+COPY --from=build /app/build/ /app/build/
+RUN apk add thttpd \
+  && addgroup -S appgroup \
+  && adduser -S appuser -G appgroup \
+  && chown -R appuser:appgroup /app/build
+EXPOSE 5000
+USER appuser
+CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "5000", "-d", "build", "-u", "appuser", "-l", "-", "-M", "60"]
+```
+Note: This example was made to work locally on my own machine. To work on Heroku the port would need to be specified like in the original dockerfile. 
+
+> Result: The size of the image decreased from 427MB to 11MB.
+
